@@ -8,6 +8,7 @@
     --button-bg: #8f7a66;
     --button-text: #f9f6f2;
     --border-color: #bbada0;
+    --icon-color: #776e65;
 }
 
 /* Dark mode styles */
@@ -20,6 +21,7 @@
     --button-bg: #404040;
     --button-text: #ffffff;
     --border-color: #404040;
+    --icon-color: #bbada0;
 }
 
 /* Apply theme variables with transitions */
@@ -175,6 +177,18 @@ body {
     cursor: pointer;
     padding: 10px;
     z-index: 1;
+}
+
+.settings-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    fill: var(--icon-color);
+    transition: fill 0.3s ease;
+}
+
+.settings-icon:hover {
+    fill: var(--text-color);
 }
 
 .settings-button:hover {
@@ -930,6 +944,7 @@ canvas#confetti-canvas {
     --button-bg: #404040;
     --button-text: #ffffff;
     --border-color: #404040;
+    --icon-color: #bbada0;
 }
 
 /* Toggle switch styles */
