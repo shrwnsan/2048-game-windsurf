@@ -121,7 +121,10 @@ The data can be visualized using tools like Excel, Google Sheets, or any data vi
 Based on the metrics collected during this project's development:
 
 #### Project Overview
-- Total Development Time: ~5 hours (4:45 hours)
+- Development Sessions: 2
+- Session 1: ~2.5 hours (Initial development, core features)
+- Session 2: ~2 hours (Refinements, testing, documentation)
+- Total Active Development Time: ~4.5 hours
 - Total Prompts: 20
 - Total Lines Changed: 873
 - Files Modified: 34 (cumulative)
