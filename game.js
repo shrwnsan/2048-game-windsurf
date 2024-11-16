@@ -7,6 +7,8 @@ class Game2048 {
         this.isGameOver = false;
         this.isDragging = false;
 
+        this.initializeLoading();
+
         // Initialize DOM elements
         this.initializeElements();
         
@@ -19,7 +21,57 @@ class Game2048 {
         this.renderGrid();
 
         // Show game after initialization
-        this.showGame();
+        // this.showGame();
+    }
+
+    initializeLoading() {
+        const loadingSteps = [
+            { message: "Initializing game...", progress: 10 },
+            { message: "Setting up game board...", progress: 30 },
+            { message: "Loading animations...", progress: 50 },
+            { message: "Preparing touch controls...", progress: 70 },
+            { message: "Almost ready...", progress: 90 }
+        ];
+
+        const loadingStatus = document.querySelector('.loading-status');
+        const progressBar = document.querySelector('#loadingProgressBar');
+        let currentStep = 0;
+
+        const updateLoading = () => {
+            if (currentStep >= loadingSteps.length) {
+                this.finishLoading();
+                return;
+            }
+
+            const step = loadingSteps[currentStep];
+            loadingStatus.textContent = step.message;
+            progressBar.style.width = `${step.progress}%`;
+            currentStep++;
+
+            setTimeout(updateLoading, 500);
+        };
+
+        updateLoading();
+    }
+
+    finishLoading() {
+        const loadingStatus = document.querySelector('.loading-status');
+        const progressBar = document.querySelector('#loadingProgressBar');
+        
+        loadingStatus.textContent = "Ready!";
+        progressBar.style.width = "100%";
+
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const gameContainer = document.getElementById('gameContainer');
+            
+            loadingScreen.style.opacity = '0';
+            gameContainer.style.opacity = '1';
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }, 200);
     }
 
     initializeElements() {

@@ -27,20 +27,28 @@
     font-family: Arial, sans-serif;
 }
 
-.loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #bbada0;
-    border-top-color: #776e65;
-    border-radius: 50%;
-    margin: 0 auto;
-    animation: spin 1s linear infinite;
+.loading-status {
+    color: #776e65;
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    opacity: 0.8;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+.loading-progress {
+    width: 200px;
+    height: 4px;
+    background: #bbada0;
+    border-radius: 2px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.loading-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #776e65;
+    transition: width 0.3s ease-out;
 }
 
 body {
@@ -411,14 +419,13 @@ body {
 
 /* Modal and Confetti z-indexing */
 .modal-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile */
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.5);
     display: none;
     justify-content: center;
@@ -434,6 +441,10 @@ body {
 }
 
 .modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: #faf8ef;
     padding: 20px;
     border-radius: 6px;
@@ -441,46 +452,26 @@ body {
     width: 90%;
     max-width: 400px;
     max-height: 90vh;
-    max-height: 90dvh;
     overflow-y: auto;
     z-index: 1001;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.modal-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #776e65;
-    margin: 0 0 15px 0;
-}
-
-.modal-message {
-    font-size: 16px;
-    color: #776e65;
-    margin: 0 0 20px 0;
-}
-
-.modal-button {
-    background: #8f7a66;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #f9f6f2;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.modal-button:hover {
-    background: #7f6b57;
-}
-
 /* Mobile adjustments for modals */
 @media screen and (max-width: 375px) {
+    .modal-overlay {
+        position: absolute;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+    }
+    
     .modal {
         width: calc(100% - 30px);
         max-width: 300px;
         padding: 15px;
+        position: absolute;
+        top: 50vh;
+        transform: translate(-50%, -50%);
     }
 
     .modal-title {
@@ -502,9 +493,8 @@ body {
 /* Prevent body scroll when modal is open */
 body.modal-open {
     overflow: hidden;
-    position: fixed;
-    width: 100%;
     height: 100%;
+    position: relative;
 }
 
 /* Confetti canvas styling */
@@ -555,7 +545,7 @@ canvas#confetti-canvas {
 
 /* Modal styling */
 .modal {
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
