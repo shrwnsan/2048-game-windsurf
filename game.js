@@ -79,6 +79,15 @@ class Game2048 {
         this.gridElement = document.getElementById('grid');
         this.scoreElement = document.getElementById('score');
         this.bestScoreElement = document.getElementById('bestScore');
+        this.messageElement = document.querySelector('.game-message');
+        this.retryButton = document.querySelector('.retry-button');
+        this.settingsButton = document.getElementById('settingsButton');
+        this.settingsModal = document.querySelector('.settings-modal');
+        this.settingsClose = document.querySelector('.settings-close');
+        this.darkModeToggle = document.getElementById('darkModeToggle');
+
+        // Initialize dark mode
+        this.initializeDarkMode();
         
         // Loading screen and game container
         this.loadingScreen = document.getElementById('loadingScreen');
@@ -91,11 +100,6 @@ class Game2048 {
         this.modalMessage = document.querySelector('.modal-message');
         this.modalButton = document.querySelector('.modal-button');
         
-        // Settings elements
-        this.settingsModal = document.querySelector('.settings-modal');
-        this.settingsButton = document.getElementById('settingsButton');
-        this.closeSettingsButton = document.getElementById('closeSettingsButton');
-        
         // Test buttons
         this.testConfettiButton = document.getElementById('testConfetti');
         this.testSuccessButton = document.getElementById('testSuccess');
@@ -105,6 +109,20 @@ class Game2048 {
         if (!this.gridElement || !this.loadingScreen || !this.gameContainer) {
             throw new Error('Critical game elements not found');
         }
+    }
+
+    initializeDarkMode() {
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        this.darkModeToggle.checked = savedTheme === 'dark';
+
+        // Add event listener for theme toggle
+        this.darkModeToggle.addEventListener('change', () => {
+            const theme = this.darkModeToggle.checked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
     }
 
     setupModals() {
@@ -175,7 +193,7 @@ class Game2048 {
     setupEventListeners() {
         // Settings modal
         this.settingsButton?.addEventListener('click', () => this.showSettingsModal());
-        this.closeSettingsButton?.addEventListener('click', () => this.hideSettingsModal());
+        this.settingsClose?.addEventListener('click', () => this.hideSettingsModal());
 
         // Test buttons
         this.testConfettiButton?.addEventListener('click', () => this.createConfetti());
