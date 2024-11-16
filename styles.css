@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #faf8ef;
+}
+
+.container {
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #776e65;
+    font-size: 80px;
+    margin: 0;
+}
+
+.score-container {
+    background-color: #bbada0;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.score-label {
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+#score {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.game-container {
+    background-color: #bbada0;
+    border-radius: 6px;
+    width: 500px;
+    height: 500px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 15px;
+    padding: 15px;
+}
+
+.grid-cell {
+    background-color: rgba(238, 228, 218, 0.35);
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 55px;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.grid-cell.tile-2 { background-color: #eee4da; color: #776e65; }
+.grid-cell.tile-4 { background-color: #ede0c8; color: #776e65; }
+.grid-cell.tile-8 { background-color: #f2b179; color: white; }
+.grid-cell.tile-16 { background-color: #f59563; color: white; }
+.grid-cell.tile-32 { background-color: #f67c5f; color: white; }
+.grid-cell.tile-64 { background-color: #f65e3b; color: white; }
+.grid-cell.tile-128 { 
+    background-color: #edcf72; 
+    color: white;
+    font-size: 45px;
+}
+.grid-cell.tile-256 { 
+    background-color: #edcc61; 
+    color: white;
+    font-size: 45px;
+}
+.grid-cell.tile-512 { 
+    background-color: #edc850; 
+    color: white;
+    font-size: 45px;
+}
+.grid-cell.tile-1024 { 
+    background-color: #edc53f; 
+    color: white;
+    font-size: 35px;
+}
+.grid-cell.tile-2048 { 
+    background-color: #edc22e; 
+    color: white;
+    font-size: 35px;
+}
+
+.instructions {
+    margin-top: 20px;
+    color: #776e65;
+    font-size: 16px;
+}
+
+.merge-animation {
+    transform: scale(1.1);
+}
+
+.new-tile-animation {
+    animation: pop-in 0.2s ease-in-out;
+}
+
+@keyframes pop-in {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
