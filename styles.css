@@ -1,3 +1,42 @@
+/* Light mode (default) */
+:root {
+    --bg-color: #faf8ef;
+    --text-color: #776e65;
+    --grid-bg: #bbada0;
+    --tile-bg: rgba(238, 228, 218, 0.35);
+    --modal-bg: #faf8ef;
+    --button-bg: #8f7a66;
+    --button-text: #f9f6f2;
+    --border-color: #bbada0;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --grid-bg: #2a2a2a;
+    --tile-bg: #333333;
+    --modal-bg: #2a2a2a;
+    --button-bg: #404040;
+    --button-text: #ffffff;
+    --border-color: #404040;
+}
+
+/* Apply theme variables with transitions */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.grid,
+.grid-cell,
+.modal,
+.settings-content,
+.modal-button,
+button,
+.score-box {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Loading Screen */
 .loading-screen {
     position: fixed;
@@ -891,18 +930,6 @@ canvas#confetti-canvas {
     --button-bg: #404040;
     --button-text: #ffffff;
     --border-color: #404040;
-}
-
-/* Light mode (default) */
-:root {
-    --bg-color: #faf8ef;
-    --text-color: #776e65;
-    --grid-bg: #bbada0;
-    --tile-bg: rgba(238, 228, 218, 0.35);
-    --modal-bg: #faf8ef;
-    --button-bg: #8f7a66;
-    --button-text: #f9f6f2;
-    --border-color: #bbada0;
 }
 
 /* Toggle switch styles */

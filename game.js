@@ -114,13 +114,13 @@ class Game2048 {
     initializeDarkMode() {
         // Check for saved theme preference
         const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.body.setAttribute('data-theme', savedTheme);
         this.darkModeToggle.checked = savedTheme === 'dark';
 
         // Add event listener for theme toggle
         this.darkModeToggle.addEventListener('change', () => {
             const theme = this.darkModeToggle.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', theme);
+            document.body.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
         });
     }
