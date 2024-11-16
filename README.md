@@ -121,14 +121,16 @@ The data can be visualized using tools like Excel, Google Sheets, or any data vi
 Based on the metrics collected during this project's development:
 
 #### Project Overview
-- Development Sessions: 2
-- Session 1: ~2.5 hours (Initial development, core features)
-- Session 2: ~2 hours (Refinements, testing, documentation)
-- Total Active Development Time: ~4.5 hours
 - Total Prompts: 20
 - Total Lines Changed: 873
 - Files Modified: 34 (cumulative)
 - Overall Success Rate: 85%
+
+Note: While we track timestamps and durations, actual development time metrics should be interpreted with caution as they may not accurately reflect real development time due to:
+- Gaps between commits not necessarily indicating breaks
+- Development work that happens between tracked interactions
+- Variable time spent on thinking and planning
+- Potential parallel tasks and context switching
 
 #### Task Distribution
 - Features: 35% (7 tasks)
