@@ -68,6 +68,33 @@ No build process or dependencies required - it's pure HTML, CSS, and JavaScript!
 - Modular JavaScript architecture
 - Comprehensive error handling
 
+## Development Metrics
+
+This project includes detailed development metrics tracking in `session_metrics.csv`. The file tracks various aspects of the development process, particularly focusing on the AI-assisted development workflow.
+
+### Metrics Structure
+
+The CSV file contains the following columns:
+
+- `Timestamp`: UTC timestamp of when the prompt was sent
+- `Prompt_Number`: Sequential number of prompts in the project
+- `Tokens_Input`: Number of tokens in the user's prompt
+- `Tokens_Output`: Number of tokens in the AI's response
+- `Lines_Changed`: Number of code lines modified/added/deleted
+- `Files_Modified`: Number of files affected by the changes
+- `Commit_Hash`: Associated Git commit hash for the changes
+- `Description`: Brief description of the changes or purpose of the prompt
+
+### Using the Metrics
+
+You can analyze this data to:
+- Track development progress over time
+- Measure coding efficiency and AI interaction patterns
+- Identify complex changes (high token count/lines changed)
+- Correlate commits with specific development steps
+
+The data can be visualized using tools like Excel, Google Sheets, or any data visualization library.
+
 ## Contributing
 
 1. Fork the repository
