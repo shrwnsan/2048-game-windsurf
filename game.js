@@ -206,8 +206,11 @@ class Game2048 {
             this.gridElement.parentElement.classList.remove('dragging-up', 'dragging-down', 'dragging-left', 'dragging-right');
 
             if (Math.abs(diffX) > minDist || Math.abs(diffY) > minDist) {
-                const currentRow = parseInt(e.target.closest('.grid-cell').dataset.row);
-                const currentCol = parseInt(e.target.closest('.grid-cell').dataset.col);
+                const cell = e.target.closest('.grid-cell');
+                if (!cell) return;
+
+                const currentRow = parseInt(cell.dataset.row);
+                const currentCol = parseInt(cell.dataset.col);
 
                 if (isNaN(currentRow) || isNaN(currentCol) || 
                     currentRow < 0 || currentRow >= this.size || 
@@ -216,12 +219,12 @@ class Game2048 {
                 }
 
                 let direction;
-                // Add direction class to game container
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     direction = diffX > 0 ? 'right' : 'left';
                 } else {
                     direction = diffY > 0 ? 'down' : 'up';
                 }
+
                 this.gridElement.parentElement.classList.add(`dragging-${direction}`);
 
                 // Add direction hints to non-empty cells
