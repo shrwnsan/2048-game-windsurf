@@ -70,30 +70,51 @@ No build process or dependencies required - it's pure HTML, CSS, and JavaScript!
 
 ## Development Metrics
 
-This project includes detailed development metrics tracking in `session_metrics.csv`. The file tracks various aspects of the development process, particularly focusing on the AI-assisted development workflow.
+This project includes detailed development metrics tracking in `session_metrics.csv`. The file tracks various aspects of the development process, particularly focusing on the AI-assisted development workflow using the Cascade feature in Windsurf IDE.
 
 ### Metrics Structure
 
 The CSV file contains the following columns:
 
+#### Time and Identification
 - `Timestamp`: UTC timestamp of when the prompt was sent
 - `Prompt_Number`: Sequential number of prompts in the project
+- `Commit_Hash`: Associated Git commit hash for the changes
+
+#### Resource Usage
 - `Tokens_Input`: Number of tokens in the user's prompt
 - `Tokens_Output`: Number of tokens in the AI's response
+- `Duration_Seconds`: Time taken to complete the task
+- `Tool_Calls`: Number of Cascade tool calls made
+- `Tools_Used`: List of specific tools utilized in the task
+
+#### Code Impact
 - `Lines_Changed`: Number of code lines modified/added/deleted
 - `Files_Modified`: Number of files affected by the changes
-- `Commit_Hash`: Associated Git commit hash for the changes
+
+#### Task Analysis
+- `Task_Category`: Type of task (setup, feature, bugfix, enhancement, documentation)
+- `Task_Complexity`: Estimated complexity (low, medium, high)
+- `Iterations_Required`: Number of attempts needed to complete the task
+- `Success_Rate`: Task completion success (0-1, where 1 means completed in first attempt)
 - `Description`: Brief description of the changes or purpose of the prompt
 
 ### Using the Metrics
 
-You can analyze this data to:
-- Track development progress over time
-- Measure coding efficiency and AI interaction patterns
-- Identify complex changes (high token count/lines changed)
-- Correlate commits with specific development steps
+This data can be analyzed to:
+- Measure Cascade's effectiveness in different types of tasks
+- Track development velocity and efficiency
+- Identify patterns in tool usage and task complexity
+- Calculate success rates for different task categories
+- Estimate time savings compared to manual development
+- Evaluate the learning curve of AI-assisted development
 
-The data can be visualized using tools like Excel, Google Sheets, or any data visualization library.
+The data can be visualized using tools like Excel, Google Sheets, or any data visualization library to generate insights about:
+- Most common task types and their success rates
+- Correlation between task complexity and completion time
+- Tool usage patterns and effectiveness
+- Development velocity over time
+- Resource efficiency (tokens vs. code changes)
 
 ## Contributing
 
