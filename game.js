@@ -7,13 +7,6 @@ class Game2048 {
         this.isGameOver = false;
         this.isDragging = false;
 
-        // Initialize settings first
-        this.settings = {
-            animationSpeed: localStorage.getItem('animationSpeed') || 'normal',
-            enableConfetti: localStorage.getItem('enableConfetti') !== 'false',
-            debugMode: localStorage.getItem('debugMode') === 'true'
-        };
-
         // Initialize DOM elements
         this.initializeElements();
         
@@ -50,12 +43,11 @@ class Game2048 {
         this.settingsModal = document.querySelector('.settings-modal');
         this.settingsButton = document.getElementById('settingsButton');
         this.closeSettingsButton = document.getElementById('closeSettingsButton');
-
-        // Settings controls
-        this.animationSpeedSelect = document.getElementById('animationSpeed');
-        this.enableConfettiCheckbox = document.getElementById('enableConfetti');
-        this.debugModeCheckbox = document.getElementById('debugMode');
+        
+        // Test buttons
         this.testConfettiButton = document.getElementById('testConfetti');
+        this.testSuccessButton = document.getElementById('testSuccess');
+        this.testGameOverButton = document.getElementById('testGameOver');
 
         // Validate critical elements
         if (!this.gridElement || !this.loadingScreen || !this.gameContainer) {
@@ -70,25 +62,21 @@ class Game2048 {
             this.resetGame();
         });
 
-        // Settings modal
-        this.settingsButton.addEventListener('click', () => this.showSettingsModal());
-        this.closeSettingsButton.addEventListener('click', () => this.hideSettingsModal());
-
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
-            if (e.target === this.settingsModal) {
-                this.hideSettingsModal();
-            }
             if (e.target === this.modalOverlay) {
                 this.hideModal();
+            }
+            if (e.target === this.settingsModal) {
+                this.hideSettingsModal();
             }
         });
 
         // Close settings modal with ESC key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.hideSettingsModal();
                 this.hideModal();
+                this.hideSettingsModal();
             }
         });
     }
@@ -116,307 +104,59 @@ class Game2048 {
     }
 
     hideModal() {
-        this.modalOverlay.classList.remove('active');
-        this.modalOverlay.style.display = 'none';
+        if (this.modalOverlay) {
+            this.modalOverlay.style.display = 'none';
+        }
+        if (this.modal) {
+            this.modal.style.display = 'none';
+        }
         
         // Remove modal-open class from body to restore scrolling
         document.body.classList.remove('modal-open');
+
+        // Reset game if it was a game over modal
+        if (this.modalTitle?.textContent === 'Game Over!') {
+            this.resetGame();
+        }
     }
 
-    setupSettings() {
-        // Load saved settings
-        const savedSettings = localStorage.getItem('2048-settings');
-        if (savedSettings) {
-            this.settings = { ...this.settings, ...JSON.parse(savedSettings) };
-            this.animationSpeedSelect.value = this.settings.animationSpeed;
-            this.enableConfettiCheckbox.checked = this.settings.enableConfetti;
-        }
+    setupEventListeners() {
+        // Settings modal
+        this.settingsButton?.addEventListener('click', () => this.showSettingsModal());
+        this.closeSettingsButton?.addEventListener('click', () => this.hideSettingsModal());
 
-        // Settings controls event listeners
-        this.animationSpeedSelect.addEventListener('change', (e) => {
-            this.settings.animationSpeed = e.target.value;
-            this.saveSettings();
-            this.updateAnimationSpeed();
+        // Test buttons
+        this.testConfettiButton?.addEventListener('click', () => this.createConfetti());
+        this.testSuccessButton?.addEventListener('click', () => {
+            this.hideSettingsModal();
+            setTimeout(() => this.showWinModal(), 300); // Add delay for smooth transition
+        });
+        this.testGameOverButton?.addEventListener('click', () => {
+            this.hideSettingsModal();
+            setTimeout(() => this.handleGameOver(), 300); // Add delay for smooth transition
         });
 
-        this.enableConfettiCheckbox.addEventListener('change', (e) => {
-            this.settings.enableConfetti = e.target.checked;
-            this.saveSettings();
-        });
-
-        // Close settings modal when clicking outside
-        document.getElementById('settingsModal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'settingsModal') {
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === this.modalOverlay) {
+                this.hideModal();
+            }
+            if (e.target === this.settingsModal) {
                 this.hideSettingsModal();
             }
         });
 
-        // Debug buttons
-        this.testConfettiButton?.addEventListener('click', () => this.createConfetti());
-
-        // Initial animation speed
-        this.updateAnimationSpeed();
-    }
-
-    saveSettings() {
-        localStorage.setItem('2048-settings', JSON.stringify(this.settings));
-    }
-
-    updateDebugMode() {
-        // Currently no implementation
-    }
-
-    showSettingsModal() {
-        const settingsModal = document.querySelector('.settings-modal');
-        settingsModal.style.display = 'flex';
-        document.body.classList.add('modal-open');
-        // Focus the first interactive element
-        document.getElementById('debugMode')?.focus();
-    }
-
-    hideSettingsModal() {
-        const settingsModal = document.querySelector('.settings-modal');
-        settingsModal.style.display = 'none';
-        document.body.classList.remove('modal-open');
-        // Return focus to settings button
-        document.getElementById('settingsButton')?.focus();
-    }
-
-    showGameModal() {
-        this.gameModal.style.display = 'flex';
-    }
-
-    handleWin() {
-        if (this.settings.enableConfetti) {
-            this.createConfetti();
-        }
-        this.showModal('Congratulations!', 'You\'ve reached 2048! Keep playing?');
-    }
-
-    handleGameOver() {
-        this.showModal('Game Over!', `Your final score is ${this.score}. Try again?`);
-    }
-
-    resetGame() {
-        this.score = 0;
-        this.scoreElement.textContent = this.score;
-        this.grid = Array(this.size).fill().map(() => Array(this.size).fill(null));
-        this.renderGrid();
-        this.addRandomTile();
-        this.addRandomTile();
-    }
-
-    checkGameOver() {
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                if (this.grid[i][j] === null) {
-                    return false;
-                }
-            }
-        }
-
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                const current = this.grid[i][j];
-                
-                if (j < this.size - 1 && current === this.grid[i][j + 1]) {
-                    return false;
-                }
-                
-                if (i < this.size - 1 && current === this.grid[i + 1][j]) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    mergeTiles(row) {
-        const mergedRow = Array(this.size).fill(null);
-        let writeIndex = 0;
-        let readIndex = 0;
-
-        while (readIndex < row.length) {
-            if (readIndex + 1 < row.length && row[readIndex] === row[readIndex + 1]) {
-                const mergedValue = row[readIndex] * 2;
-                mergedRow[writeIndex] = mergedValue;
-                this.score += mergedValue;
-                readIndex += 2;
-            } else if (row[readIndex] !== null) {
-                mergedRow[writeIndex] = row[readIndex];
-                readIndex++;
-            } else {
-                readIndex++;
-                continue;
-            }
-            writeIndex++;
-        }
-
-        this.scoreElement.textContent = this.score;
-        return mergedRow;
-    }
-
-    rotateGrid(direction) {
-        const rotated = Array(this.size).fill().map(() => Array(this.size).fill(null));
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                switch(direction) {
-                    case 'left':
-                        rotated[i][j] = this.grid[i][j];
-                        break;
-                    case 'right':
-                        rotated[i][j] = this.grid[i][this.size - 1 - j];
-                        break;
-                    case 'up':
-                        rotated[i][j] = this.grid[i][j];
-                        break;
-                    case 'down':
-                        rotated[i][j] = this.grid[this.size - 1 - i][j];
-                        break;
-                }
-            }
-        }
-        return rotated;
-    }
-
-    unrotateGrid(rotatedGrid, direction) {
-        const unrotated = Array(this.size).fill().map(() => Array(this.size).fill(null));
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                switch(direction) {
-                    case 'left':
-                        unrotated[i][j] = rotatedGrid[i][j];
-                        break;
-                    case 'right':
-                        unrotated[i][this.size - 1 - j] = rotatedGrid[i][j];
-                        break;
-                    case 'up':
-                        unrotated[i][j] = rotatedGrid[i][j];
-                        break;
-                    case 'down':
-                        unrotated[this.size - 1 - i][j] = rotatedGrid[i][j];
-                        break;
-                }
-            }
-        }
-        return unrotated;
-    }
-
-    renderGrid() {
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                this.updateCell(i, j, this.grid[i][j]);
-            }
-        }
-    }
-
-    findFarthestPosition(row, col, direction) {
-        if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
-            return null;
-        }
-
-        let farthest = { row, col };
-        let next = { row, col };
-
-        // Calculate the next position based on direction
-        const getNextPosition = (pos) => {
-            if (!pos) return null;
-            switch(direction) {
-                case 'up': return { row: pos.row - 1, col: pos.col };
-                case 'down': return { row: pos.row + 1, col: pos.col };
-                case 'left': return { row: pos.row, col: pos.col - 1 };
-                case 'right': return { row: pos.row, col: pos.col + 1 };
-                default: return null;
-            }
-        };
-
-        // Keep moving in the direction until we hit a boundary or a non-null cell
-        do {
-            farthest = next;
-            next = getNextPosition(farthest);
-        } while (
-            next &&
-            next.row >= 0 && next.row < this.size &&
-            next.col >= 0 && next.col < this.size &&
-            this.grid[next.row]?.[next.col] === null
-        );
-
-        return farthest;
-    }
-
-    getNextPosition(row, col, direction) {
-        if (!direction || row < 0 || row >= this.size || col < 0 || col >= this.size) {
-            return null;
-        }
-
-        let next;
-        switch(direction) {
-            case 'up': next = { row: row - 1, col: col }; break;
-            case 'down': next = { row: row + 1, col: col }; break;
-            case 'left': next = { row: row, col: col - 1 }; break;
-            case 'right': next = { row: row, col: col + 1 }; break;
-            default: return null;
-        }
-
-        if (next.row < 0 || next.row >= this.size || next.col < 0 || next.col >= this.size) {
-            return null;
-        }
-
-        return next;
-    }
-
-    setupEventListeners() {
-        // Test confetti button
-        this.testConfettiButton?.addEventListener('click', () => {
-            this.createConfetti();
-        });
-
-        // Settings controls
-        this.animationSpeedSelect?.addEventListener('change', (e) => {
-            this.settings.animationSpeed = e.target.value;
-            localStorage.setItem('animationSpeed', e.target.value);
-        });
-
-        this.enableConfettiCheckbox?.addEventListener('change', (e) => {
-            this.settings.enableConfetti = e.target.checked;
-            localStorage.setItem('enableConfetti', e.target.checked);
-            if (e.target.checked) {
-                this.createConfetti(); // Test confetti when enabled
-            }
-        });
-
-        this.debugModeCheckbox?.addEventListener('change', (e) => {
-            this.settings.debugMode = e.target.checked;
-            localStorage.setItem('debugMode', e.target.checked);
-            this.updateDebugMode();
-        });
-
-        // Load saved settings
-        if (this.animationSpeedSelect) {
-            this.animationSpeedSelect.value = this.settings.animationSpeed;
-        }
-        if (this.enableConfettiCheckbox) {
-            this.enableConfettiCheckbox.checked = this.settings.enableConfetti;
-        }
-        if (this.debugModeCheckbox) {
-            this.debugModeCheckbox.checked = this.settings.debugMode;
-        }
-
-        // Keyboard controls
+        // Close modal with escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key.startsWith('Arrow')) {
-                e.preventDefault();
-                const direction = e.key.toLowerCase().replace('arrow', '');
-                this.move(direction);
+            if (e.key === 'Escape') {
+                this.hideModal();
+                this.hideSettingsModal();
             }
         });
 
-        // Touch and mouse controls
-        let startX, startY;
-        let isDragging = false;
-        let draggedTile = null;
-        let draggedTileValue = null;
+        // Touch event listeners for mobile gameplay
+        let touchStartX = 0;
+        let touchStartY = 0;
 
         const getEventPoint = (e) => {
             if (e.type.startsWith('touch')) {
@@ -434,11 +174,9 @@ class Game2048 {
                 const point = getEventPoint(e);
                 if (!point) return;
                 
-                startX = point.clientX;
-                startY = point.clientY;
-                isDragging = true;
-                draggedTile = cell;
-                draggedTileValue = this.grid[parseInt(cell.dataset.row)][parseInt(cell.dataset.col)];
+                touchStartX = point.clientX;
+                touchStartY = point.clientY;
+                this.isDragging = true;
                 
                 cell.classList.add('tile-dragging');
                 this.gridElement.classList.add('dragging');
@@ -446,7 +184,7 @@ class Game2048 {
         };
 
         const handleMove = (e) => {
-            if (!isDragging || !draggedTile) return;
+            if (!this.isDragging) return;
             e.preventDefault();
 
             const point = getEventPoint(e);
@@ -455,8 +193,8 @@ class Game2048 {
                 return;
             }
 
-            const diffX = point.clientX - startX;
-            const diffY = point.clientY - startY;
+            const diffX = point.clientX - touchStartX;
+            const diffY = point.clientY - touchStartY;
             
             const minDist = 30;
 
@@ -468,8 +206,8 @@ class Game2048 {
             this.gridElement.parentElement.classList.remove('dragging-up', 'dragging-down', 'dragging-left', 'dragging-right');
 
             if (Math.abs(diffX) > minDist || Math.abs(diffY) > minDist) {
-                const currentRow = parseInt(draggedTile.dataset.row);
-                const currentCol = parseInt(draggedTile.dataset.col);
+                const currentRow = parseInt(e.target.closest('.grid-cell').dataset.row);
+                const currentCol = parseInt(e.target.closest('.grid-cell').dataset.col);
 
                 if (isNaN(currentRow) || isNaN(currentCol) || 
                     currentRow < 0 || currentRow >= this.size || 
@@ -533,7 +271,7 @@ class Game2048 {
         };
 
         const handleEnd = (e) => {
-            if (!isDragging || !draggedTile) return;
+            if (!this.isDragging) return;
             e.preventDefault();
 
             const point = getEventPoint(e);
@@ -542,8 +280,8 @@ class Game2048 {
                 return;
             }
 
-            const diffX = point.clientX - startX;
-            const diffY = point.clientY - startY;
+            const diffX = point.clientX - touchStartX;
+            const diffY = point.clientY - touchStartY;
             
             const minDist = 30;
 
@@ -563,23 +301,18 @@ class Game2048 {
             this.gridElement.classList.remove('dragging');
             this.gridElement.parentElement.classList.remove('dragging-up', 'dragging-down', 'dragging-left', 'dragging-right');
             
-            isDragging = false;
-            draggedTile = null;
-            draggedTileValue = null;
+            this.isDragging = false;
         };
 
         const handleCancel = () => {
-            if (draggedTile) {
-                draggedTile.classList.remove('tile-dragging');
+            if (this.isDragging) {
+                const cells = this.gridElement.querySelectorAll('.grid-cell');
+                cells.forEach(cell => cell.classList.remove('potential-drop', 'potential-path', 'direction-hint', 'tile-dragging'));
+                this.gridElement.classList.remove('dragging');
+                this.gridElement.parentElement.classList.remove('dragging-up', 'dragging-down', 'dragging-left', 'dragging-right');
+                
+                this.isDragging = false;
             }
-            const cells = this.gridElement.querySelectorAll('.grid-cell');
-            cells.forEach(cell => cell.classList.remove('potential-drop', 'potential-path', 'direction-hint'));
-            this.gridElement.classList.remove('dragging');
-            this.gridElement.parentElement.classList.remove('dragging-up', 'dragging-down', 'dragging-left', 'dragging-right');
-            
-            isDragging = false;
-            draggedTile = null;
-            draggedTileValue = null;
         };
 
         // Mouse events
@@ -593,19 +326,6 @@ class Game2048 {
         document.addEventListener('touchmove', handleMove, { passive: false });
         document.addEventListener('touchend', handleEnd, { passive: false });
         document.addEventListener('touchcancel', handleCancel);
-    }
-
-    updateAnimationSpeed() {
-        const speed = parseInt(this.animationSpeedSelect.value);
-        document.documentElement.style.setProperty('--animation-speed', `${speed}ms`);
-    }
-
-    saveSettings() {
-        localStorage.setItem('2048-settings', JSON.stringify(this.settings));
-    }
-
-    updateDebugMode() {
-        // Currently no implementation
     }
 
     initializeGrid() {
@@ -811,11 +531,100 @@ class Game2048 {
         }
     }
 
-    createConfetti() {
-        if (!this.settings.enableConfetti && !document.getElementById('testConfetti')) {
-            return;
+    handleWin() {
+        this.createConfetti();
+    }
+
+    checkGameOver() {
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                if (this.grid[i][j] === null) {
+                    return false;
+                }
+            }
         }
 
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                const current = this.grid[i][j];
+                
+                if (j < this.size - 1 && current === this.grid[i][j + 1]) {
+                    return false;
+                }
+                
+                if (i < this.size - 1 && current === this.grid[i + 1][j]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    renderGrid() {
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                this.updateCell(i, j, this.grid[i][j]);
+            }
+        }
+    }
+
+    findFarthestPosition(row, col, direction) {
+        if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
+            return null;
+        }
+
+        let farthest = { row, col };
+        let next = { row, col };
+
+        // Calculate the next position based on direction
+        const getNextPosition = (pos) => {
+            if (!pos) return null;
+            switch(direction) {
+                case 'up': return { row: pos.row - 1, col: pos.col };
+                case 'down': return { row: pos.row + 1, col: pos.col };
+                case 'left': return { row: pos.row, col: pos.col - 1 };
+                case 'right': return { row: pos.row, col: pos.col + 1 };
+                default: return null;
+            }
+        };
+
+        // Keep moving in the direction until we hit a boundary or a non-null cell
+        do {
+            farthest = next;
+            next = getNextPosition(farthest);
+        } while (
+            next &&
+            next.row >= 0 && next.row < this.size &&
+            next.col >= 0 && next.col < this.size &&
+            this.grid[next.row]?.[next.col] === null
+        );
+
+        return farthest;
+    }
+
+    getNextPosition(row, col, direction) {
+        if (!direction || row < 0 || row >= this.size || col < 0 || col >= this.size) {
+            return null;
+        }
+
+        let next;
+        switch(direction) {
+            case 'up': next = { row: row - 1, col: col }; break;
+            case 'down': next = { row: row + 1, col: col }; break;
+            case 'left': next = { row: row, col: col - 1 }; break;
+            case 'right': next = { row: row, col: col + 1 }; break;
+            default: return null;
+        }
+
+        if (next.row < 0 || next.row >= this.size || next.col < 0 || next.col >= this.size) {
+            return null;
+        }
+
+        return next;
+    }
+
+    createConfetti() {
         const count = 200;
         const defaults = {
             origin: { y: 0.7 },
@@ -829,7 +638,7 @@ class Game2048 {
         };
 
         function fire(particleRatio, opts) {
-            window.confetti(Object.assign({}, defaults, opts, {
+            confetti(Object.assign({}, defaults, opts, {
                 particleCount: Math.floor(count * particleRatio)
             }));
         }
@@ -860,23 +669,52 @@ class Game2048 {
             spread: 120,
             startVelocity: 45,
         });
+    }
 
-        // Add some realistic cannon shots
-        setTimeout(() => {
-            window.confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { x: 0.6, y: 0.55 }
-            });
-        }, 250);
+    showWinModal() {
+        if (this.modalTitle && this.modalMessage && this.modalButton) {
+            this.modalTitle.textContent = 'Congratulations!';
+            this.modalMessage.textContent = 'You\'ve reached 2048! Keep playing to achieve an even higher score!';
+            this.modalButton.textContent = 'Keep Playing';
+            this.modalOverlay.style.display = 'flex';
+            this.modal.style.display = 'block';
+            document.body.classList.add('modal-open');
+            this.createConfetti();
+        }
+    }
 
-        setTimeout(() => {
-            window.confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { x: 0.4, y: 0.55 }
-            });
-        }, 400);
+    handleGameOver() {
+        if (this.modalTitle && this.modalMessage && this.modalButton) {
+            this.modalTitle.textContent = 'Game Over!';
+            this.modalMessage.textContent = `Your final score is ${this.score}. Try again?`;
+            this.modalButton.textContent = 'Try Again';
+            this.modalOverlay.style.display = 'flex';
+            this.modal.style.display = 'block';
+            document.body.classList.add('modal-open');
+        }
+    }
+
+    showSettingsModal() {
+        if (this.settingsModal) {
+            this.settingsModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+        }
+    }
+
+    hideSettingsModal() {
+        if (this.settingsModal) {
+            this.settingsModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+    }
+
+    resetGame() {
+        this.score = 0;
+        this.scoreElement.textContent = this.score;
+        this.grid = Array(this.size).fill().map(() => Array(this.size).fill(null));
+        this.renderGrid();
+        this.addRandomTile();
+        this.addRandomTile();
     }
 
     showGame() {
