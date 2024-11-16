@@ -1,6 +1,6 @@
-# 2048 Game
+# 2048 Game v1.0
 
-A modern implementation of the classic 2048 puzzle game with smooth animations and touch support.
+A modern implementation of the classic 2048 puzzle game with smooth animations, touch support, and enhanced visual feedback.
 
 ## Features
 
@@ -9,14 +9,28 @@ A modern implementation of the classic 2048 puzzle game with smooth animations a
 - 📱 Responsive design - works on both desktop and mobile
 - 🎯 Touch and swipe support for mobile devices
 - 🎨 Beautiful color scheme matching the original game
-- 📊 Score tracking
+- 📊 Score tracking with best score persistence
+- 🎉 Celebration effects on reaching 2048
+- ⚙️ Customizable settings:
+  - Animation speed control
+  - Confetti effect toggle
+- 🔄 Game state management:
+  - "Game Over" detection
+  - "You Win" celebration
+  - Continue playing after winning
+- 💫 Enhanced visual feedback:
+  - Tile movement preview
+  - Merge possibility indicators
+  - Direction hints while dragging
+- 🖼️ Custom favicon
 
 ## How to Play
 
 1. Use arrow keys (↑ ↓ ← →) or swipe gestures to move tiles
-2. Tiles with the same number merge when they collide
-3. After each move, a new tile appears (2 or 4)
-4. Combine tiles to reach 2048!
+2. Click and drag tiles to preview movements
+3. Tiles with the same number merge when they collide
+4. After each move, a new tile appears (2 or 4)
+5. Combine tiles to reach 2048!
 
 ## Getting Started
 
@@ -36,10 +50,23 @@ No build process or dependencies required - it's pure HTML, CSS, and JavaScript!
 ├── index.html      # Game HTML structure
 ├── styles.css      # Game styling and animations
 ├── game.js         # Game logic and mechanics
+├── favicon.png     # Game icon
 ├── README.md       # Project documentation
 ├── CHANGELOG.md    # Version history
 └── LICENSE.md      # MIT License
 ```
+
+## Technical Features
+
+- Pure HTML5, CSS3, and vanilla JavaScript implementation
+- No external dependencies (except canvas-confetti for celebrations)
+- Responsive design using CSS Grid and Flexbox
+- CSS transitions for smooth animations
+- LocalStorage for score persistence
+- Event delegation for efficient DOM handling
+- Touch event handling for mobile support
+- Modular JavaScript architecture
+- Comprehensive error handling
 
 ## Contributing
 
@@ -58,3 +85,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - Original 2048 game by Gabriele Cirulli
 - Built with pure HTML, CSS, and JavaScript
 - Created using Windsurf IDE
+- Uses canvas-confetti for celebration effects

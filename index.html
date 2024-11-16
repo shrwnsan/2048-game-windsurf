@@ -2,25 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2048 Game</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>2048</h1>
-            <div class="score-container">
-                <div class="score-label">Score</div>
-                <div id="score">0</div>
-            </div>
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-title">2048</div>
+            <div class="loading-spinner"></div>
         </div>
+    </div>
+
+    <div id="gameContainer" class="container" style="opacity: 1;">
+        <div class="header">
+            <div class="title-section">
+                <h1 class="title">2048</h1>
+                <div class="scores-container">
+                    <div class="score-box">
+                        <div class="score-title">Score</div>
+                        <div class="score-number" id="score">0</div>
+                    </div>
+                    <div class="score-box">
+                        <div class="score-title">Best</div>
+                        <div class="score-number" id="best">0</div>
+                    </div>
+                </div>
+            </div>
+            <button class="settings-button" id="settingsButton">⚙</button>
+        </div>
+
         <div class="game-container">
             <div id="grid"></div>
         </div>
+        
+        <!-- Game Modal -->
+        <div class="modal-overlay">
+            <div class="modal">
+                <h2 class="modal-title"></h2>
+                <p class="modal-message"></p>
+                <button class="modal-button">OK</button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="settings-modal">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2 class="settings-title">Settings</h2>
+                    <button id="closeSettingsButton" class="settings-close">&times;</button>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label" for="animationSpeed">Animation Speed</label>
+                    <select id="animationSpeed">
+                        <option value="fast">Fast</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="slow">Slow</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">
+                        <input type="checkbox" id="enableConfetti" checked>
+                        Enable Confetti
+                    </label>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">
+                        <input type="checkbox" id="debugMode">
+                        Debug Mode
+                    </label>
+                    <button id="testConfetti" class="modal-button">Test Confetti</button>
+                </div>
+            </div>
+        </div>
+
         <div class="instructions">
             Use arrow keys or swipe to play. Combine numbers to reach 2048!
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="game.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            new Game2048();
+        });
+    </script>
 </body>
 </html>
