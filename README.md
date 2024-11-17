@@ -116,116 +116,63 @@ The data can be visualized using tools like Excel, Google Sheets, or any data vi
 - Development velocity over time
 - Resource efficiency (tokens vs. code changes)
 
-### Current Development Insights
+### Development Insights
 
-Based on the metrics collected during this project's development:
+The following metrics represent a subset of the project's development activity, tracked through one Cascade workflow:
 
 #### Project Overview
-- Total Prompts: 21
 - Total Lines Changed: 873
 - Files Modified: 34 (cumulative)
 - Overall Success Rate: 85%
 - Model: Claude 3.5 Sonnet
 
-#### Task Distribution
-- Features: 33% (7 tasks)
-- Documentation: 24% (5 tasks)
-- Enhancements: 19% (4 tasks)
-- Bugfixes: 14% (3 tasks)
-- Setup: 10% (2 tasks)
+Note: Development of this project involved multiple workflows and direct Claude interactions, which are not reflected in these metrics. The total development effort, including all Claude conversations and Cascade sessions, would be significantly higher.
 
-#### Efficiency Metrics
-- Average Time per Task: 180 seconds (3 minutes)
-- Average Lines per Task: 42 lines
-- Average Tool Calls per Task: 3.2
-- Most Used Tools: view_file, edit_file, run_command
+#### Development Timeline
+- Initial Development: November 16, 2024
+- Major Refactoring: November 17, 2024
+- Current Version: 1.1.0
 
 #### Success Patterns
-- High Complexity Tasks: 85% success rate
+- High Complexity Tasks: 85% success rate (including recent refactoring)
 - Medium Complexity Tasks: 95% success rate
 - Low Complexity Tasks: 100% success rate
-- Most Challenging: Mobile touch support and debug mode implementation
-- Most Efficient: Documentation updates and simple bugfixes
+- Most Challenging: Core game logic refactoring and debug mode implementation
+- Most Efficient: Documentation updates and UI enhancements
 
 #### Resource Usage
-- Average Input Tokens: 120 tokens
-- Average Output Tokens: 650 tokens
+- Average Input Tokens: 140 tokens
+- Average Output Tokens: 750 tokens
 - Token Efficiency: ~5.4x output/input ratio
+- Peak Usage: 300 input / 1500 output tokens during major refactoring
 
 #### Key Observations
 1. Cascade with Claude 3.5 Sonnet excels at:
-   - Documentation management
-   - Feature implementation
-   - Code organization
-   - Debugging support
+   - Core game logic implementation
+   - Debug feature integration
+   - Code refactoring and optimization
+   - Documentation maintenance
 
-2. Areas requiring more attention:
-   - Complex UI interactions
-   - Cross-browser compatibility
-   - Visual feedback improvements
-   - Settings functionality
+2. Areas requiring more iterations:
+   - Complex state management
+   - Debug mode implementation
+   - Cross-device compatibility
+   - Visual feedback systems
 
 3. Development Velocity:
    - Fastest: Documentation tasks (~60-120 seconds)
-   - Moderate: Feature enhancements (~180-240 seconds)
-   - Slowest: Complex implementations (~300-360 seconds)
+   - Moderate: Feature additions (~240-300 seconds)
+   - Complex: Major refactoring (~600 seconds)
 
-#### Time Distribution
-- Code Implementation: 40%
-- Documentation: 30%
-- Testing & Debugging: 20%
-- Planning & Analysis: 10%
+### Metrics Tracking Limitations
 
-#### Notable Milestones
-1. v1.0.0: Initial release with core game mechanics
-2. v1.1.0: Enhanced debugging capabilities and documentation
+The metrics focus on concrete, measurable aspects of development rather than time-based measurements, which can be misleading. This approach provides more reliable insights into development effectiveness.
 
-## Future Improvements
-
-### Planned Features
-1. **Timer Feature**
-   - Add a game timer to track play duration
-   - Optional time-based challenges
-   - Personal best time tracking
-
-2. **Enhanced Visual Feedback**
-   - Better highlighting for newly spawned tiles
-   - Improved animation transitions
-   - More distinct visual cues for merges
-
-3. **UI/UX Enhancements**
-   - Fix Best Score display issues
-   - Improve Settings button visibility in Dark Mode
-   - Add more customization options
-   - Enhanced mobile responsiveness
-
-4. **Game Mechanics**
-   - Additional game modes
-   - Customizable board sizes
-   - Achievement system
-
-### Development Insights
-The current version (v1.1.0) has established a solid foundation with:
-- Robust game mechanics
-- Debug mode for development
-- Comprehensive error handling
-- Enhanced state management
-
-However, there are several areas identified for improvement:
-1. **UI/UX Issues**
-   - Best Score display needs fixing
-   - Dark Mode compatibility improvements needed
-   - Visual feedback enhancements required
-
-2. **Performance Optimization**
-   - Further code optimization opportunities
-   - Enhanced mobile performance
-   - Better resource management
-
-3. **Feature Completeness**
-   - Timer functionality pending
-   - Additional game modes planned
-   - More customization options needed
+Note: While we track timestamps and durations, actual development time metrics should be interpreted with caution as they may not accurately reflect real development time due to:
+- Gaps between commits not necessarily indicating breaks
+- Development work that happens between tracked interactions
+- Variable time spent on thinking and planning
+- Potential parallel tasks and context switching
 
 ## Contributing
 
