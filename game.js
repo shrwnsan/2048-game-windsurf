@@ -14,6 +14,10 @@ class Game2048 {
         // Initialize DOM elements
         this.initializeElements();
         
+        // Initialize scores display
+        this.scoreElement.textContent = this.score;
+        this.bestScoreElement.textContent = this.bestScore;
+        
         // Set up game
         this.setupModals();
         this.setupEventListeners();
@@ -80,7 +84,7 @@ class Game2048 {
         // Get DOM elements
         this.gridElement = document.getElementById('grid');
         this.scoreElement = document.getElementById('score');
-        this.bestScoreElement = document.getElementById('bestScore');
+        this.bestScoreElement = document.getElementById('best');
         this.messageElement = document.querySelector('.game-message');
         this.retryButton = document.querySelector('.retry-button');
         this.settingsButton = document.getElementById('settingsButton');
@@ -688,6 +692,13 @@ class Game2048 {
             this.renderGrid();
             this.scoreElement.textContent = this.score;
             
+            // Update best score if current score is higher
+            if (this.score > this.bestScore) {
+                this.bestScore = this.score;
+                this.bestScoreElement.textContent = this.bestScore;
+                localStorage.setItem('bestScore', this.bestScore);
+            }
+            
             if (this.debugMode) {
                 console.log('Move was successful');
                 console.log('Grid after move:', JSON.parse(JSON.stringify(this.grid)));
@@ -901,6 +912,7 @@ class Game2048 {
         this.renderGrid();
         this.addRandomTile();
         this.addRandomTile();
+        this.isGameOver = false;
     }
 
     showGame() {
