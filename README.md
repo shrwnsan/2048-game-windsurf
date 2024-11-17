@@ -1,6 +1,6 @@
-# 2048 Game v1.0
+# 2048 Game - Windsurf IDE Demo
 
-A modern implementation of the classic 2048 puzzle game with smooth animations, touch support, and enhanced visual feedback.
+A modern implementation of the classic 2048 puzzle game, developed using Windsurf IDE's Cascade feature. This project serves as a demonstration of AI-assisted development using Claude 3.5 Sonnet and ChatGPT 4.
 
 ## Features
 
@@ -34,11 +34,11 @@ A modern implementation of the classic 2048 puzzle game with smooth animations, 
 
 ## Getting Started
 
-Simply clone the repository and open `index.html` in your web browser:
+Clone the repository and open `index.html` in your web browser:
 
 ```bash
-git clone https://github.com/yourusername/2048-game.git
-cd 2048-game
+git clone https://github.com/shrwnsan/2048-game-windsurf.git
+cd 2048-game-windsurf
 ```
 
 No build process or dependencies required - it's pure HTML, CSS, and JavaScript!
@@ -46,7 +46,7 @@ No build process or dependencies required - it's pure HTML, CSS, and JavaScript!
 ## Project Structure
 
 ```
-2048-game/
+2048-game-windsurf/
 ├── index.html      # Game HTML structure
 ├── styles.css      # Game styling and animations
 ├── game.js         # Game logic and mechanics
@@ -116,7 +116,7 @@ The data can be visualized using tools like Excel, Google Sheets, or any data vi
 - Development velocity over time
 - Resource efficiency (tokens vs. code changes)
 
-### Development Insights
+## Development Insights
 
 The following metrics represent a subset of the project's development activity, tracked through one Cascade workflow:
 
@@ -133,46 +133,16 @@ Note: Development of this project involved multiple workflows and direct Claude 
 - Major Refactoring: November 17, 2024
 - Current Version: 1.1.0
 
-#### Success Patterns
-- High Complexity Tasks: 85% success rate (including recent refactoring)
-- Medium Complexity Tasks: 95% success rate
-- Low Complexity Tasks: 100% success rate
-- Most Challenging: Core game logic refactoring and debug mode implementation
-- Most Efficient: Documentation updates and UI enhancements
+## About Windsurf IDE and Cascade
 
-#### Resource Usage
-- Average Input Tokens: 140 tokens
-- Average Output Tokens: 750 tokens
-- Token Efficiency: ~5.4x output/input ratio
-- Peak Usage: 300 input / 1500 output tokens during major refactoring
+This project showcases the capabilities of Windsurf IDE's Cascade feature:
+- AI-powered pair programming
+- Seamless integration with Claude 3.5 Sonnet and ChatGPT 4
+- Efficient code generation and refactoring
+- Automated documentation and testing
+- Real-time AI assistance during development
 
-#### Key Observations
-1. Cascade with Claude 3.5 Sonnet excels at:
-   - Core game logic implementation
-   - Debug feature integration
-   - Code refactoring and optimization
-   - Documentation maintenance
-
-2. Areas requiring more iterations:
-   - Complex state management
-   - Debug mode implementation
-   - Cross-device compatibility
-   - Visual feedback systems
-
-3. Development Velocity:
-   - Fastest: Documentation tasks (~60-120 seconds)
-   - Moderate: Feature additions (~240-300 seconds)
-   - Complex: Major refactoring (~600 seconds)
-
-### Metrics Tracking Limitations
-
-The metrics focus on concrete, measurable aspects of development rather than time-based measurements, which can be misleading. This approach provides more reliable insights into development effectiveness.
-
-Note: While we track timestamps and durations, actual development time metrics should be interpreted with caution as they may not accurately reflect real development time due to:
-- Gaps between commits not necessarily indicating breaks
-- Development work that happens between tracked interactions
-- Variable time spent on thinking and planning
-- Potential parallel tasks and context switching
+The development process demonstrates how AI assistance can enhance productivity while maintaining code quality and best practices.
 
 ## Contributing
 
