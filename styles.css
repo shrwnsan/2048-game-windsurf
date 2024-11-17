@@ -1037,3 +1037,43 @@ input:checked + .slider:before {
         padding: 5px;
     }
 }
+
+/* Footer styles */
+.game-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    color: #776e65;
+    border-top: 1px solid #eee;
+    z-index: 10;
+}
+
+.game-footer a {
+    color: #776e65;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.game-footer a:hover {
+    color: #8f7a66;
+    text-decoration: underline;
+}
+
+[data-theme="dark"] .game-footer {
+    background: rgba(50, 50, 50, 0.9);
+    color: #f9f6f2;
+    border-top: 1px solid #444;
+}
+
+[data-theme="dark"] .game-footer a {
+    color: #f9f6f2;
+}
+
+[data-theme="dark"] .game-footer a:hover {
+    color: #fff;
+}
