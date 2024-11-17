@@ -12,7 +12,7 @@ This project was developed using:
 
 ## Metrics Overview
 
-The following metrics represent a subset of the project's development activity, tracked through one Cascade workflow:
+The following metrics represent the project's development activity, tracked through multiple Cascade workflows:
 
 ### Project Metrics
 - Total Lines Changed: 873
@@ -20,12 +20,27 @@ The following metrics represent a subset of the project's development activity, 
 - Overall Success Rate: 85%
 - Model: Claude 3.5 Sonnet
 
-Note: Development of this project involved multiple workflows and direct Claude interactions, which are not reflected in these metrics. The total development effort, including all Claude conversations and Cascade sessions, would be significantly higher.
-
 ### Development Timeline
 - Initial Development: November 16, 2024
 - Major Refactoring: November 17, 2024
+- Score Mechanics Fix: November 17, 2024 (reverted)
 - Current Version: 1.1.0
+
+### Workflow History
+1. Initial Development
+   - Core game implementation
+   - Basic UI and controls
+   - Score tracking implementation
+
+2. Major Refactoring
+   - Code organization
+   - Performance optimization
+   - UI/UX improvements
+
+3. Score Mechanics Fix
+   - Attempted score system improvements
+   - Best score tracking updates
+   - Reverted due to implementation issues
 
 ## Metrics Collection Methodology
 
