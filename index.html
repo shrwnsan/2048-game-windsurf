@@ -6,6 +6,28 @@
     <title>2048 Game</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Debug mode styles */
+        .tile {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+        }
+        .debug-info {
+            font-size: 9px !important;
+            line-height: 1 !important;
+            margin-top: -5px !important;
+            color: rgba(119, 110, 101, 0.9) !important;
+            background-color: rgba(255, 255, 255, 0.5) !important;
+            padding: 1px 4px !important;
+            border-radius: 2px !important;
+            pointer-events: none !important;
+        }
+        [data-theme="dark"] .debug-info {
+            color: rgba(249, 246, 242, 0.9) !important;
+            background-color: rgba(0, 0, 0, 0.3) !important;
+        }
+    </style>
 </head>
 <body>
     <div id="loadingScreen" class="loading-screen">
@@ -71,6 +93,13 @@
                             <span class="slider round"></span>
                         </label>
                         <span class="settings-label">Dark Mode</span>
+                    </div>
+                    <div class="settings-option">
+                        <label class="switch">
+                            <input type="checkbox" id="debugModeToggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="settings-label">Debug Mode</span>
                     </div>
                 </div>
                 <div class="settings-group">

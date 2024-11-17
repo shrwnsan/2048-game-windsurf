@@ -7,6 +7,7 @@ class Game2048 {
         this.isGameOver = false;
         this.isDragging = false;
         this.isModalOpen = false;
+        this.debugMode = false;
 
         this.initializeLoading();
 
@@ -86,6 +87,11 @@ class Game2048 {
         this.settingsModal = document.querySelector('.settings-modal');
         this.settingsClose = document.querySelector('.settings-close');
         this.darkModeToggle = document.getElementById('darkModeToggle');
+        this.debugModeToggle = document.getElementById('debugModeToggle');
+        this.debugModeToggle.addEventListener('change', () => {
+            this.debugMode = this.debugModeToggle.checked;
+            this.updateDebugMode();
+        });
 
         // Initialize dark mode
         this.initializeDarkMode();
@@ -201,14 +207,47 @@ class Game2048 {
         this.settingsClose?.addEventListener('click', () => this.hideSettingsModal());
 
         // Test buttons
-        this.testConfettiButton?.addEventListener('click', () => this.createConfetti());
-        this.testSuccessButton?.addEventListener('click', () => {
-            this.hideSettingsModal();
-            setTimeout(() => this.showWinModal(), 300); // Add delay for smooth transition
+        this.testConfettiButton?.addEventListener('click', () => {
+            if (this.debugMode) {
+                console.group('Test: Confetti Effect');
+                console.log('Triggering confetti animation');
+                console.log('Animation settings:', {
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+            this.createConfetti();
+            if (this.debugMode) console.groupEnd();
         });
+
+        this.testSuccessButton?.addEventListener('click', () => {
+            if (this.debugMode) {
+                console.group('Test: Success Modal');
+                console.log('Current game state:', {
+                    score: this.score,
+                    bestScore: this.bestScore,
+                    isGameOver: this.isGameOver
+                });
+                console.log('Triggering success modal');
+            }
+            this.handleWin();
+            if (this.debugMode) console.groupEnd();
+        });
+
         this.testGameOverButton?.addEventListener('click', () => {
-            this.hideSettingsModal();
-            setTimeout(() => this.handleGameOver(), 300); // Add delay for smooth transition
+            if (this.debugMode) {
+                console.group('Test: Game Over Modal');
+                console.log('Current game state:', {
+                    score: this.score,
+                    bestScore: this.bestScore,
+                    isGameOver: this.isGameOver,
+                    grid: this.grid
+                });
+                console.log('Triggering game over modal');
+            }
+            this.handleGameOver();
+            if (this.debugMode) console.groupEnd();
         });
 
         // Close modals when clicking outside
@@ -234,24 +273,28 @@ class Game2048 {
                     case 'ArrowUp':
                     case 'w':
                     case 'W':
+                        if (this.debugMode) console.log('Keypress detected:', e.key, '(up)');
                         e.preventDefault();
                         this.move('up');
                         break;
                     case 'ArrowDown':
                     case 's':
                     case 'S':
+                        if (this.debugMode) console.log('Keypress detected:', e.key, '(down)');
                         e.preventDefault();
                         this.move('down');
                         break;
                     case 'ArrowLeft':
                     case 'a':
                     case 'A':
+                        if (this.debugMode) console.log('Keypress detected:', e.key, '(left)');
                         e.preventDefault();
                         this.move('left');
                         break;
                     case 'ArrowRight':
                     case 'd':
                     case 'D':
+                        if (this.debugMode) console.log('Keypress detected:', e.key, '(right)');
                         e.preventDefault();
                         this.move('right');
                         break;
@@ -470,6 +513,9 @@ class Game2048 {
             const {row, col} = emptyCells[Math.floor(Math.random() * emptyCells.length)];
             const value = Math.random() < 0.9 ? 2 : 4;
             this.grid[row][col] = value;
+            if (this.debugMode) {
+                console.log(`New tile added: value=${value} at position (${row},${col})`);
+            }
             this.updateCell(row, col, value, true);
         }
     }
@@ -485,6 +531,12 @@ class Game2048 {
                 if (isNew) {
                     cell.classList.add('new-tile-animation');
                 }
+                if (this.debugMode) {
+                    const debugInfo = document.createElement('div');
+                    debugInfo.className = 'debug-info';
+                    debugInfo.textContent = `(${row},${col})`;
+                    cell.appendChild(debugInfo);
+                }
             } else {
                 cell.innerHTML = '';
             }
@@ -494,6 +546,12 @@ class Game2048 {
     move(direction) {
         // Don't allow moves if waiting for user response after game over
         if (this.isGameOver) return;
+
+        if (this.debugMode) {
+            console.group(`Move: ${direction}`);
+            console.log('Grid before move:', JSON.parse(JSON.stringify(this.grid)));
+            console.log('Score before move:', this.score);
+        }
 
         let moved = false;
         const newGrid = Array(this.size).fill().map(() => Array(this.size).fill(null));
@@ -630,42 +688,96 @@ class Game2048 {
             this.renderGrid();
             this.scoreElement.textContent = this.score;
             
+            if (this.debugMode) {
+                console.log('Move was successful');
+                console.log('Grid after move:', JSON.parse(JSON.stringify(this.grid)));
+                console.log('Score after move:', this.score);
+            }
+
+            // Check for 2048 tile after successful move
+            for (let i = 0; i < this.size; i++) {
+                for (let j = 0; j < this.size; j++) {
+                    if (this.grid[i][j] === 2048) {
+                        if (this.debugMode) {
+                            console.log('2048 tile achieved at position:', i, j);
+                        }
+                        this.handleWin();
+                        break;
+                    }
+                }
+            }
+            
             if (this.checkGameOver()) {
                 this.isGameOver = true;
                 setTimeout(() => {
+                    if (this.debugMode) {
+                        console.log('%cGame Over!', 'color: red; font-size: 20px; font-weight: bold;');
+                        console.log('Final Statistics:');
+                        console.log('- Score:', this.score);
+                        console.log('- Best Score:', this.bestScore);
+                        console.log('- Grid State:', this.grid);
+                    }
                     this.handleGameOver();
-                }, 300); // Small delay to show the last move
+                }, 300);
             }
+        } else if (this.debugMode) {
+            console.log('Move was invalid - no tiles moved');
+        }
+
+        if (this.debugMode) {
+            console.groupEnd();
         }
     }
 
     handleWin() {
+        if (this.debugMode) {
+            console.log('%cCongratulations! You Won!', 'color: green; font-size: 20px; font-weight: bold;');
+            console.log('Win Statistics:');
+            console.log('- Score:', this.score);
+            console.log('- Best Score:', this.bestScore);
+            console.log('- Winning Grid:', this.grid);
+        }
         this.createConfetti();
+        this.showModal('You Win!', 'Congratulations! You reached 2048! Continue playing?');
     }
 
     checkGameOver() {
+        // First check for empty cells
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 if (this.grid[i][j] === null) {
+                    if (this.debugMode) {
+                        console.log('Game continues: empty cell found at', i, j);
+                    }
                     return false;
                 }
             }
         }
 
+        // Check for possible merges
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 const current = this.grid[i][j];
                 
                 if (j < this.size - 1 && current === this.grid[i][j + 1]) {
+                    if (this.debugMode) {
+                        console.log('Game continues: horizontal merge possible at', i, j);
+                    }
                     return false;
                 }
                 
                 if (i < this.size - 1 && current === this.grid[i + 1][j]) {
+                    if (this.debugMode) {
+                        console.log('Game continues: vertical merge possible at', i, j);
+                    }
                     return false;
                 }
             }
         }
 
+        if (this.debugMode) {
+            console.log('No more moves possible - game over condition met');
+        }
         return true;
     }
 
@@ -733,50 +845,16 @@ class Game2048 {
     }
 
     createConfetti() {
-        const count = 200;
-        const defaults = {
-            origin: { y: 0.7 },
-            spread: 360,
-            ticks: 100,
-            gravity: 0,
-            decay: 0.94,
-            startVelocity: 30,
-            shapes: ['star'],
-            colors: ['#EF476F', '#FFD166', '#06D6A0', '#118AB2', '#9b5de5', '#f15bb5']
-        };
-
-        function fire(particleRatio, opts) {
-            confetti(Object.assign({}, defaults, opts, {
-                particleCount: Math.floor(count * particleRatio)
-            }));
+        if (window.confetti) {
+            if (this.debugMode) console.log('Launching confetti animation');
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        } else if (this.debugMode) {
+            console.warn('Confetti library not loaded');
         }
-
-        fire(0.25, {
-            spread: 26,
-            startVelocity: 55,
-        });
-
-        fire(0.2, {
-            spread: 60,
-        });
-
-        fire(0.35, {
-            spread: 100,
-            decay: 0.91,
-            scalar: 0.8
-        });
-
-        fire(0.1, {
-            spread: 120,
-            startVelocity: 25,
-            decay: 0.92,
-            scalar: 1.2
-        });
-
-        fire(0.1, {
-            spread: 120,
-            startVelocity: 45,
-        });
     }
 
     showWinModal() {
@@ -847,6 +925,33 @@ class Game2048 {
                 }, 500);
             }, 1000); // Give more time to see the loading screen
         });
+    }
+
+    updateDebugMode() {
+        const tiles = document.querySelectorAll('.tile');
+        if (this.debugMode) {
+            tiles.forEach(tile => {
+                // Remove any existing debug info first
+                const existingDebug = tile.querySelector('.debug-info');
+                if (existingDebug) existingDebug.remove();
+
+                // Create new debug info
+                const debugInfo = document.createElement('div');
+                debugInfo.className = 'debug-info';
+                const pos = tile.getAttribute('data-position').split(',');
+                debugInfo.textContent = `${pos[0]},${pos[1]}`; // Simplified format
+                
+                // Insert debug info after the number span
+                const numberSpan = tile.querySelector('span');
+                if (numberSpan) {
+                    numberSpan.after(debugInfo);
+                } else {
+                    tile.appendChild(debugInfo);
+                }
+            });
+        } else {
+            document.querySelectorAll('.debug-info').forEach(el => el.remove());
+        }
     }
 }
 
