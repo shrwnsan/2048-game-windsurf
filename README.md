@@ -179,6 +179,53 @@ Note: While we track timestamps and durations, actual development time metrics s
 - Variable time spent on thinking and planning
 - Potential parallel tasks and context switching
 
+## Future Improvements
+
+### Planned Features
+1. **Timer Feature**
+   - Add a game timer to track play duration
+   - Optional time-based challenges
+   - Personal best time tracking
+
+2. **Enhanced Visual Feedback**
+   - Better highlighting for newly spawned tiles
+   - Improved animation transitions
+   - More distinct visual cues for merges
+
+3. **UI/UX Enhancements**
+   - Fix Best Score display issues
+   - Improve Settings button visibility in Dark Mode
+   - Add more customization options
+   - Enhanced mobile responsiveness
+
+4. **Game Mechanics**
+   - Additional game modes
+   - Customizable board sizes
+   - Achievement system
+
+### Development Insights
+The current version (v1.1.0) has established a solid foundation with:
+- Robust game mechanics
+- Debug mode for development
+- Comprehensive error handling
+- Enhanced state management
+
+However, there are several areas identified for improvement:
+1. **UI/UX Issues**
+   - Best Score display needs fixing
+   - Dark Mode compatibility improvements needed
+   - Visual feedback enhancements required
+
+2. **Performance Optimization**
+   - Further code optimization opportunities
+   - Enhanced mobile performance
+   - Better resource management
+
+3. **Feature Completeness**
+   - Timer functionality pending
+   - Additional game modes planned
+   - More customization options needed
+
 ## Contributing
 
 1. Fork the repository

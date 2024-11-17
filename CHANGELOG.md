@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-01-09
+
+### Added
+- Debug mode for development and testing
+- Comprehensive console logging for game events
+- Test buttons for game states (confetti, success, game over)
+- Enhanced error handling and debugging support
+
+### Changed
+- Improved code organization and structure
+- Enhanced game state management
+- Better event handling for user interactions
+
+### Known Issues
+- Best Score display issues in the UI
+- Settings buttons visibility in Dark Mode
+- New tile visual feedback needs improvement
+- No timer feature implemented yet
+
 ## [1.0.0] - 2024-01-09
 
 ### Added
