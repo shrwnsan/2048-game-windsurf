@@ -8,6 +8,7 @@ class Game2048 {
         this.isDragging = false;
         this.isModalOpen = false;
         this.debugMode = false;
+        this._previousScore = 0; // Track previous score to prevent decreases
 
         this.initializeLoading();
 
@@ -557,8 +558,15 @@ class Game2048 {
             console.log('Score before move:', this.score);
         }
 
+        // Store the previous score before the move
+        this._previousScore = this.score;
+        
+        if (this.debugMode) {
+            console.log(`[Score Debug] Before move: ${this.score}`);
+        }
+
         let moved = false;
-        const newGrid = Array(this.size).fill().map(() => Array(this.size).fill(null));
+        let newGrid = Array(this.size).fill().map(() => Array(this.size).fill(null));
         
         switch(direction) {
             case 'up':
@@ -571,9 +579,13 @@ class Game2048 {
                             if (lastValue === null) {
                                 lastValue = this.grid[row][col];
                             } else if (lastValue === this.grid[row][col]) {
-                                newGrid[writePos][col] = lastValue * 2;
-                                this.score += lastValue * 2;
-                                if (lastValue * 2 === 2048) {
+                                const mergeValue = lastValue * 2;
+                                newGrid[writePos][col] = mergeValue;
+                                this.score += mergeValue;
+                                if (this.debugMode) {
+                                    console.log(`[Score Debug] Merged ${lastValue} + ${lastValue} = ${mergeValue}, new score: ${this.score}`);
+                                }
+                                if (mergeValue === 2048) {
                                     this.handleWin();
                                 }
                                 lastValue = null;
@@ -602,9 +614,13 @@ class Game2048 {
                             if (lastValue === null) {
                                 lastValue = this.grid[row][col];
                             } else if (lastValue === this.grid[row][col]) {
-                                newGrid[writePos][col] = lastValue * 2;
-                                this.score += lastValue * 2;
-                                if (lastValue * 2 === 2048) {
+                                const mergeValue = lastValue * 2;
+                                newGrid[writePos][col] = mergeValue;
+                                this.score += mergeValue;
+                                if (this.debugMode) {
+                                    console.log(`[Score Debug] Merged ${lastValue} + ${lastValue} = ${mergeValue}, new score: ${this.score}`);
+                                }
+                                if (mergeValue === 2048) {
                                     this.handleWin();
                                 }
                                 lastValue = null;
@@ -633,9 +649,13 @@ class Game2048 {
                             if (lastValue === null) {
                                 lastValue = this.grid[row][col];
                             } else if (lastValue === this.grid[row][col]) {
-                                newGrid[row][writePos] = lastValue * 2;
-                                this.score += lastValue * 2;
-                                if (lastValue * 2 === 2048) {
+                                const mergeValue = lastValue * 2;
+                                newGrid[row][writePos] = mergeValue;
+                                this.score += mergeValue;
+                                if (this.debugMode) {
+                                    console.log(`[Score Debug] Merged ${lastValue} + ${lastValue} = ${mergeValue}, new score: ${this.score}`);
+                                }
+                                if (mergeValue === 2048) {
                                     this.handleWin();
                                 }
                                 lastValue = null;
@@ -664,9 +684,13 @@ class Game2048 {
                             if (lastValue === null) {
                                 lastValue = this.grid[row][col];
                             } else if (lastValue === this.grid[row][col]) {
-                                newGrid[row][writePos] = lastValue * 2;
-                                this.score += lastValue * 2;
-                                if (lastValue * 2 === 2048) {
+                                const mergeValue = lastValue * 2;
+                                newGrid[row][writePos] = mergeValue;
+                                this.score += mergeValue;
+                                if (this.debugMode) {
+                                    console.log(`[Score Debug] Merged ${lastValue} + ${lastValue} = ${mergeValue}, new score: ${this.score}`);
+                                }
+                                if (mergeValue === 2048) {
                                     this.handleWin();
                                 }
                                 lastValue = null;
@@ -690,6 +714,23 @@ class Game2048 {
             this.grid = newGrid;
             this.addRandomTile();
             this.renderGrid();
+
+            if (this.debugMode) {
+                console.log(`[Score Debug] After move, before protection: ${this.score}`);
+            }
+            
+            // Ensure score never decreases
+            if (this.score < this._previousScore) {
+                if (this.debugMode) {
+                    console.log(`[Score Debug] Score decreased! Restoring from ${this.score} to ${this._previousScore}`);
+                }
+                this.score = this._previousScore;
+            }
+            
+            if (this.debugMode) {
+                console.log(`[Score Debug] Final score: ${this.score}`);
+            }
+            
             this.scoreElement.textContent = this.score;
             
             // Update best score if current score is higher
@@ -701,42 +742,47 @@ class Game2048 {
             
             if (this.debugMode) {
                 console.log('Move was successful');
-                console.log('Grid after move:', JSON.parse(JSON.stringify(this.grid)));
-                console.log('Score after move:', this.score);
             }
-
-            // Check for 2048 tile after successful move
-            for (let i = 0; i < this.size; i++) {
-                for (let j = 0; j < this.size; j++) {
-                    if (this.grid[i][j] === 2048) {
-                        if (this.debugMode) {
-                            console.log('2048 tile achieved at position:', i, j);
-                        }
-                        this.handleWin();
-                        break;
-                    }
-                }
-            }
+        } else {
+            // Invalid move - restore previous score
+            this.score = this._previousScore;
+            this.scoreElement.textContent = this.score;
             
-            if (this.checkGameOver()) {
-                this.isGameOver = true;
-                setTimeout(() => {
-                    if (this.debugMode) {
-                        console.log('%cGame Over!', 'color: red; font-size: 20px; font-weight: bold;');
-                        console.log('Final Statistics:');
-                        console.log('- Score:', this.score);
-                        console.log('- Best Score:', this.bestScore);
-                        console.log('- Grid State:', this.grid);
-                    }
-                    this.handleGameOver();
-                }, 300);
+            if (this.debugMode) {
+                console.log('Move was invalid - no tiles moved');
             }
-        } else if (this.debugMode) {
-            console.log('Move was invalid - no tiles moved');
         }
 
         if (this.debugMode) {
-            console.groupEnd();
+            console.log('Grid after move:', JSON.parse(JSON.stringify(this.grid)));
+            console.log('Score after move:', this.score);
+        }
+
+        // Check for 2048 tile after successful move
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                if (this.grid[i][j] === 2048) {
+                    if (this.debugMode) {
+                        console.log('2048 tile achieved at position:', i, j);
+                    }
+                    this.handleWin();
+                    break;
+                }
+            }
+        }
+        
+        if (this.checkGameOver()) {
+            this.isGameOver = true;
+            setTimeout(() => {
+                if (this.debugMode) {
+                    console.log('%cGame Over!', 'color: red; font-size: 20px; font-weight: bold;');
+                    console.log('Final Statistics:');
+                    console.log('- Score:', this.score);
+                    console.log('- Best Score:', this.bestScore);
+                    console.log('- Grid State:', this.grid);
+                }
+                this.handleGameOver();
+            }, 300);
         }
     }
 
@@ -907,6 +953,7 @@ class Game2048 {
 
     resetGame() {
         this.score = 0;
+        this._previousScore = 0;
         this.scoreElement.textContent = this.score;
         this.grid = Array(this.size).fill().map(() => Array(this.size).fill(null));
         this.renderGrid();
