@@ -4,6 +4,13 @@ A modern implementation of the classic 2048 puzzle game, developed using [Windsu
 
 🎮 [Play the game](https://shrwnsan.github.io/2048-game-windsurf)
 
+## Development Documentation
+
+For developers interested in the AI-assisted development process:
+- See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed development insights, metrics methodology, and process documentation
+- The project includes comprehensive development metrics in `session_metrics.csv`, documented in DEVELOPMENT.md
+- Learn about our experience using Windsurf IDE's Cascade feature for game development
+
 ## Features
 
 - 🎮 Classic 2048 gameplay mechanics
