@@ -756,6 +756,7 @@ class Game2048 {
         if (this.debugMode) {
             console.log('Grid after move:', JSON.parse(JSON.stringify(this.grid)));
             console.log('Score after move:', this.score);
+            console.groupEnd(); // Close the move group
         }
 
         // Check for 2048 tile after successful move
