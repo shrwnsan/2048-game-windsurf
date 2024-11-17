@@ -6,6 +6,7 @@ class Game2048 {
         this.bestScore = parseInt(localStorage.getItem('bestScore')) || 0;
         this.isGameOver = false;
         this.isDragging = false;
+        this.isModalOpen = false;
 
         this.initializeLoading();
 
@@ -171,6 +172,8 @@ class Game2048 {
         this.modal.addEventListener('touchmove', (e) => {
             e.stopPropagation();
         }, { passive: true });
+
+        this.isModalOpen = true;
     }
 
     hideModal() {
@@ -188,6 +191,8 @@ class Game2048 {
         if (this.modalTitle?.textContent === 'Game Over!') {
             this.resetGame();
         }
+
+        this.isModalOpen = false;
     }
 
     setupEventListeners() {
@@ -221,6 +226,36 @@ class Game2048 {
             if (e.key === 'Escape') {
                 this.hideModal();
                 this.hideSettingsModal();
+            }
+
+            // Handle WASD and arrow key controls
+            if (!this.isModalOpen) {
+                switch (e.key) {
+                    case 'ArrowUp':
+                    case 'w':
+                    case 'W':
+                        e.preventDefault();
+                        this.move('up');
+                        break;
+                    case 'ArrowDown':
+                    case 's':
+                    case 'S':
+                        e.preventDefault();
+                        this.move('down');
+                        break;
+                    case 'ArrowLeft':
+                    case 'a':
+                    case 'A':
+                        e.preventDefault();
+                        this.move('left');
+                        break;
+                    case 'ArrowRight':
+                    case 'd':
+                    case 'D':
+                        e.preventDefault();
+                        this.move('right');
+                        break;
+                }
             }
         });
 

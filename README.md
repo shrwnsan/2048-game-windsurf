@@ -26,7 +26,7 @@ A modern implementation of the classic 2048 puzzle game with smooth animations, 
 
 ## How to Play
 
-1. Use arrow keys (↑ ↓ ← →) or swipe gestures to move tiles
+1. Use arrow keys (↑ ↓ ← →) or WASD keys to move tiles
 2. Click and drag tiles to preview movements
 3. Tiles with the same number merge when they collide
 4. After each move, a new tile appears (2 or 4)
