@@ -1,6 +1,8 @@
 # 2048 Game - Windsurf IDE Demo
 
-A modern implementation of the classic 2048 puzzle game, developed using Windsurf IDE's Cascade feature. This project serves as a demonstration of AI-assisted development using Claude 3.5 Sonnet and ChatGPT 4.
+A modern implementation of the classic 2048 puzzle game, developed using [Windsurf IDE](https://codeium.com/windsurf) by Codeium. This project serves as a demonstration of AI-assisted development using Claude 3.5 Sonnet.
+
+🎮 [Play the game](https://shrwnsan.github.io/2048-game-windsurf)
 
 ## Features
 
@@ -135,9 +137,9 @@ Note: Development of this project involved multiple workflows and direct Claude 
 
 ## About Windsurf IDE and Cascade
 
-This project showcases the capabilities of Windsurf IDE's Cascade feature:
+This project showcases the capabilities of [Windsurf IDE](https://codeium.com/windsurf), a next-generation development environment by Codeium:
 - AI-powered pair programming
-- Seamless integration with Claude 3.5 Sonnet and ChatGPT 4
+- Seamless integration with Claude 3.5 Sonnet
 - Efficient code generation and refactoring
 - Automated documentation and testing
 - Real-time AI assistance during development
